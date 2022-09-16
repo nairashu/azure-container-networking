@@ -102,6 +102,14 @@ var (
 		},
 		[]string{subnetLabel, subnetCIDRLabel, podnetARMIDLabel},
 	)
+	ipamSubnetExhaustionState = prometheus.NewGaugeVec(
+		prometheus.GaugeOpts{
+			Name:        "cx_ipam_subnet_exhaustion_state",
+			Help:        "IPAM view of subnet exhaustion state",
+			ConstLabels: prometheus.Labels{customerMetricLabel: customerMetricLabelValue},
+		},
+		[]string{subnetLabel, subnetCIDRLabel, podnetARMIDLabel},
+	)
 )
 
 func init() {
@@ -117,7 +125,7 @@ func init() {
 		ipamPrimaryIPCount,
 		ipamRequestedIPConfigCount,
 		ipamTotalIPCount,
-	)
+		ipamSubnetExhaustionState)
 }
 
 func observeIPPoolState(state ipPoolState, meta metaState) {
@@ -133,4 +141,10 @@ func observeIPPoolState(state ipPoolState, meta metaState) {
 	ipamPrimaryIPCount.WithLabelValues(labels...).Set(float64(len(meta.primaryIPAddresses)))
 	ipamRequestedIPConfigCount.WithLabelValues(labels...).Set(float64(state.requestedIPs))
 	ipamTotalIPCount.WithLabelValues(labels...).Set(float64(state.totalIPs))
+	if meta.exhausted {
+		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(1))
+	} else {
+		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(0))
+	}
+
 }
