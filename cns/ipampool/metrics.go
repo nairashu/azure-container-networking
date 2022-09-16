@@ -125,7 +125,8 @@ func init() {
 		ipamPrimaryIPCount,
 		ipamRequestedIPConfigCount,
 		ipamTotalIPCount,
-		ipamSubnetExhaustionState)
+		ipamSubnetExhaustionState
+	)
 }
 
 func observeIPPoolState(state ipPoolState, meta metaState) {
@@ -141,10 +142,9 @@ func observeIPPoolState(state ipPoolState, meta metaState) {
 	ipamPrimaryIPCount.WithLabelValues(labels...).Set(float64(len(meta.primaryIPAddresses)))
 	ipamRequestedIPConfigCount.WithLabelValues(labels...).Set(float64(state.requestedIPs))
 	ipamTotalIPCount.WithLabelValues(labels...).Set(float64(state.totalIPs))
+	var exhaustionState float64 = 0
 	if meta.exhausted {
-		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(1))
-	} else {
-		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(0))
+		exhaustionState = 1
 	}
-
+	ipamSubnetExhaustionState.WithLabelValues(labels...).Set(exhaustionState)
 }
