@@ -125,7 +125,7 @@ func init() {
 		ipamPrimaryIPCount,
 		ipamRequestedIPConfigCount,
 		ipamTotalIPCount,
-		ipamSubnetExhaustionState
+		ipamSubnetExhaustionState,
 	)
 }
 
