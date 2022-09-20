@@ -5,6 +5,11 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 )
 
+const (
+	cssReconcilerError   = 1
+	cssReconcilerSuccess = 0
+)
+
 var (
 	cssReconcilerErrorState = prometheus.NewGauge(
 		prometheus.GaugeOpts{
