@@ -5,6 +5,7 @@ import (
 	"sigs.k8s.io/controller-runtime/pkg/metrics"
 )
 
+// Constants to describe the error state boolean values for the cluster subnet state
 const (
 	cssReconcilerError   = 1
 	cssReconcilerSuccess = 0
