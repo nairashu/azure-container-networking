@@ -5,6 +5,7 @@ import (
 
 	"github.com/Azure/azure-container-networking/crd/clustersubnetstate/api/v1alpha1"
 	"github.com/pkg/errors"
+	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/apimachinery/pkg/types"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -22,10 +23,10 @@ type Reconciler struct {
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
 	css, err := r.Cli.Get(ctx, req.NamespacedName)
 	if err != nil {
-		cssReconcilerErrorState.Set(float64(cssReconcilerError))
+		cssReconcilerErrorCount.With(prometheus.Labels{"reconcilerWatcherState": SubnetExhaustionCRDWatcherFailed}).Inc()
 		return reconcile.Result{}, errors.Wrapf(err, "failed to get css %s", req.String())
 	}
-	cssReconcilerErrorState.Set(float64(cssReconcilerSuccess))
+	cssReconcilerErrorCount.With(prometheus.Labels{"reconcilerWatcherState": SubnetExhaustionCRDWatcherSuccess}).Inc()
 	r.Sink <- *css
 	return reconcile.Result{}, nil
 }

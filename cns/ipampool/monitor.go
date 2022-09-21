@@ -166,8 +166,9 @@ func buildIPPoolState(ips map[string]cns.IPConfigurationStatus, spec v1alpha.Nod
 		totalIPs:     int64(len(ips)),
 		requestedIPs: spec.RequestedIPCount,
 	}
-	for _, v := range ips {
-		switch v.GetState() {
+	for i := range ips {
+		ip := ips[i]
+		switch ip.GetState() {
 		case types.Assigned:
 			state.allocatedToPods++
 		case types.Available:
@@ -266,7 +267,7 @@ func (pm *Monitor) increasePoolSize(ctx context.Context, meta metaState, state i
 
 	if _, err := pm.nnccli.UpdateSpec(ctx, &tempNNCSpec); err != nil {
 		// caller will retry to update the CRD again
-		return err
+		return fmt.Errorf("[ipam-pool-monitor] Increasing pool size: UpdateCRDSpec failed %w", err)
 	}
 
 	logger.Printf("[ipam-pool-monitor] Increasing pool size: UpdateCRDSpec succeeded for spec %+v", tempNNCSpec)
@@ -308,7 +309,7 @@ func (pm *Monitor) decreasePoolSize(ctx context.Context, meta metaState, state i
 		logger.Printf("[ipam-pool-monitor] Marking IPs as PendingRelease, ipsToBeReleasedCount %d", decreaseIPCountBy)
 		var err error
 		if pendingIPAddresses, err = pm.httpService.MarkIPAsPendingRelease(int(decreaseIPCountBy)); err != nil {
-			return err
+			return fmt.Errorf("[ipam-pool-monitor] Marking IPs as PendingRelease failed %w", err)
 		}
 
 		newIpsMarkedAsPending = true
@@ -330,7 +331,7 @@ func (pm *Monitor) decreasePoolSize(ctx context.Context, meta metaState, state i
 	_, err := pm.nnccli.UpdateSpec(ctx, &tempNNCSpec)
 	if err != nil {
 		// caller will retry to update the CRD again
-		return err
+		return fmt.Errorf("[ipam-pool-monitor] Decreasing pool size: UpdateCRDSpec failed %w", err)
 	}
 
 	logger.Printf("[ipam-pool-monitor] Decreasing pool size: UpdateCRDSpec succeeded for spec %+v", tempNNCSpec)
@@ -355,7 +356,7 @@ func (pm *Monitor) cleanPendingRelease(ctx context.Context) error {
 	_, err := pm.nnccli.UpdateSpec(ctx, &tempNNCSpec)
 	if err != nil {
 		// caller will retry to update the CRD again
-		return err
+		return fmt.Errorf("[ipam-pool-monitor] cleanPendingRelease: UpdateCRDSpec failed %w", err)
 	}
 
 	logger.Printf("[ipam-pool-monitor] cleanPendingRelease: UpdateCRDSpec succeeded for spec %+v", tempNNCSpec)
@@ -374,7 +375,8 @@ func (pm *Monitor) createNNCSpecForCRD() v1alpha.NodeNetworkConfigSpec {
 
 	// Get All Pending IPs from CNS and populate it again.
 	pendingIPs := pm.httpService.GetPendingReleaseIPConfigs()
-	for _, pendingIP := range pendingIPs {
+	for i := range pendingIPs {
+		pendingIP := pendingIPs[i]
 		spec.IPsNotInUse = append(spec.IPsNotInUse, pendingIP.ID)
 	}
 

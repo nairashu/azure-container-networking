@@ -7,21 +7,20 @@ import (
 
 // Constants to describe the error state boolean values for the cluster subnet state
 const (
-	cssReconcilerError   = 1
-	cssReconcilerSuccess = 0
+	SubnetExhaustionCRDWatcherFailed  = "SubnetExhaustionCRDWatcherFailed"
+	SubnetExhaustionCRDWatcherSuccess = "SubnetExhaustionCRDWatcherSuccess"
 )
 
-var (
-	cssReconcilerErrorState = prometheus.NewGauge(
-		prometheus.GaugeOpts{
-			Name: "cluster_subnet_state_reconciler_error_state",
-			Help: "Reconciler Error",
-		},
-	)
+var cssReconcilerErrorCount = prometheus.NewCounterVec(
+	prometheus.CounterOpts{
+		Name: "cluster_subnet_state_reconciler_error_count_total",
+		Help: "Number of errors in reconciler while watching for subnet exhaustion",
+	},
+	[]string{"reconcilerWatcherState"},
 )
 
 func init() {
 	metrics.Registry.MustRegister(
-		cssReconcilerErrorState,
+		cssReconcilerErrorCount,
 	)
 }
