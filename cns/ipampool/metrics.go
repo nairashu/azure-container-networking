@@ -6,13 +6,16 @@ import (
 )
 
 const (
-	subnetLabel              = "subnet"
-	subnetCIDRLabel          = "subnet_cidr"
-	podnetARMIDLabel         = "podnet_arm_id"
-	customerMetricLabel      = "customer_metric"
-	customerMetricLabelValue = "customer metric"
-	subnetIPExhausted        = 1
-	subnetIPNotExhausted     = 0
+	subnetLabel                = "subnet"
+	subnetCIDRLabel            = "subnet_cidr"
+	podnetARMIDLabel           = "podnet_arm_id"
+	customerMetricLabel        = "customer_metric"
+	customerMetricLabelValue   = "customer metric"
+	subnetExhaustionStateLabel = "subnetExhaustionState"
+	subnetIPExhausted          = 1
+	subnetIPNotExhausted       = 0
+	subnetIPRangeExhausted     = "subnetIPRangeExhausted"
+	subnetIPRangeNotExhausted  = "subnetIPRangeNotExhausted"
 )
 
 var (
@@ -112,6 +115,13 @@ var (
 		},
 		[]string{subnetLabel, subnetCIDRLabel, podnetARMIDLabel},
 	)
+	ipamSubnetExhaustionCount = prometheus.NewCounterVec(
+		prometheus.CounterOpts{
+			Name: "cx_ipam_subnet_exhaustion_state_count_total",
+			Help: "Count of the number of times the ipam pool monitor sees subnet exhaustion",
+		},
+		[]string{subnetLabel, subnetCIDRLabel, podnetARMIDLabel, subnetExhaustionStateLabel},
+	)
 )
 
 func init() {
@@ -128,6 +138,7 @@ func init() {
 		ipamRequestedIPConfigCount,
 		ipamTotalIPCount,
 		ipamSubnetExhaustionState,
+		ipamSubnetExhaustionCount,
 	)
 }
 
@@ -146,7 +157,11 @@ func observeIPPoolState(state ipPoolState, meta metaState) {
 	ipamTotalIPCount.WithLabelValues(labels...).Set(float64(state.totalIPs))
 	if meta.exhausted {
 		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(subnetIPExhausted))
+		ipamSubnetExhaustionCount.With(prometheus.Labels{subnetLabel: meta.subnet, subnetCIDRLabel: meta.subnetCIDR,
+			podnetARMIDLabel: meta.subnetARMID, subnetExhaustionStateLabel: subnetIPRangeExhausted}).Inc()
 	} else {
 		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(subnetIPNotExhausted))
+		ipamSubnetExhaustionCount.With(prometheus.Labels{subnetLabel: meta.subnet, subnetCIDRLabel: meta.subnetCIDR,
+			podnetARMIDLabel: meta.subnetARMID, subnetExhaustionStateLabel: subnetIPRangeNotExhausted}).Inc()
 	}
 }
