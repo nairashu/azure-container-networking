@@ -11,7 +11,7 @@ const (
 	podnetARMIDLabel           = "podnet_arm_id"
 	customerMetricLabel        = "customer_metric"
 	customerMetricLabelValue   = "customer metric"
-	subnetExhaustionStateLabel = "subnetExhaustionState"
+	subnetExhaustionStateLabel = "subnet_exhaustion_state"
 	subnetIPExhausted          = 1
 	subnetIPNotExhausted       = 0
 	subnetIPRangeExhausted     = "subnetIPRangeExhausted"
@@ -157,15 +157,7 @@ func observeIPPoolState(state ipPoolState, meta metaState) {
 	ipamTotalIPCount.WithLabelValues(labels...).Set(float64(state.totalIPs))
 	if meta.exhausted {
 		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(subnetIPExhausted))
-		ipamSubnetExhaustionCount.With(prometheus.Labels{
-			subnetLabel: meta.subnet, subnetCIDRLabel: meta.subnetCIDR,
-			podnetARMIDLabel: meta.subnetARMID, subnetExhaustionStateLabel: subnetIPRangeExhausted,
-		}).Inc()
 	} else {
 		ipamSubnetExhaustionState.WithLabelValues(labels...).Set(float64(subnetIPNotExhausted))
-		ipamSubnetExhaustionCount.With(prometheus.Labels{
-			subnetLabel: meta.subnet, subnetCIDRLabel: meta.subnetCIDR,
-			podnetARMIDLabel: meta.subnetARMID, subnetExhaustionStateLabel: subnetIPRangeNotExhausted,
-		}).Inc()
 	}
 }
