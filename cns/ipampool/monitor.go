@@ -3,6 +3,7 @@ package ipampool
 import (
 	"context"
 	"fmt"
+	"strconv"
 	"sync"
 	"time"
 
@@ -100,17 +101,10 @@ func (pm *Monitor) Start(ctx context.Context) error {
 		case css := <-pm.cssSource: // received an updated ClusterSubnetState
 			pm.metastate.exhausted = css.Status.Exhausted
 			logger.Printf("subnet exhausted status = %t", pm.metastate.exhausted)
-			if pm.metastate.exhausted {
-				ipamSubnetExhaustionCount.With(prometheus.Labels{
-					subnetLabel: pm.metastate.subnet, subnetCIDRLabel: pm.metastate.subnetCIDR,
-					podnetARMIDLabel: pm.metastate.subnetARMID, subnetExhaustionStateLabel: subnetIPRangeExhausted,
-				}).Inc()
-			} else {
-				ipamSubnetExhaustionCount.With(prometheus.Labels{
-					subnetLabel: pm.metastate.subnet, subnetCIDRLabel: pm.metastate.subnetCIDR,
-					podnetARMIDLabel: pm.metastate.subnetARMID, subnetExhaustionStateLabel: subnetIPRangeNotExhausted,
-				}).Inc()
-			}
+			ipamSubnetExhaustionCount.With(prometheus.Labels{
+				subnetLabel: pm.metastate.subnet, subnetCIDRLabel: pm.metastate.subnetCIDR,
+				podnetARMIDLabel: pm.metastate.subnetARMID, subnetExhaustionStateLabel: strconv.FormatBool(pm.metastate.exhausted),
+			}).Inc()
 			select {
 			default:
 				// if we have NOT initialized and enter this case, we continue out of this iteration and let the for loop begin again.

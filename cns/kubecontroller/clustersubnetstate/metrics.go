@@ -7,8 +7,6 @@ import (
 
 // Constants to describe the error state boolean values for the cluster subnet state
 const (
-	subnetExhaustionCRDWatcherFailed  = "SubnetExhaustionCRDWatcherFailed"
-	subnetExhaustionCRDWatcherSuccess = "SubnetExhaustionCRDWatcherSuccess"
 	cssReconcilerCRDWatcherStateLabel = "css_reconciler_crd_watcher_status"
 )
 

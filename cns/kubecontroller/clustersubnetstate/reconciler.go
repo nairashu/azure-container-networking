@@ -23,10 +23,10 @@ type Reconciler struct {
 func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reconcile.Result, error) {
 	css, err := r.Cli.Get(ctx, req.NamespacedName)
 	if err != nil {
-		cssReconcilerErrorCount.With(prometheus.Labels{cssReconcilerCRDWatcherStateLabel: subnetExhaustionCRDWatcherFailed}).Inc()
+		cssReconcilerErrorCount.With(prometheus.Labels{cssReconcilerCRDWatcherStateLabel: "failed"}).Inc()
 		return reconcile.Result{}, errors.Wrapf(err, "failed to get css %s", req.String())
 	}
-	cssReconcilerErrorCount.With(prometheus.Labels{cssReconcilerCRDWatcherStateLabel: subnetExhaustionCRDWatcherSuccess}).Inc()
+	cssReconcilerErrorCount.With(prometheus.Labels{cssReconcilerCRDWatcherStateLabel: "succeeded"}).Inc()
 	r.Sink <- *css
 	return reconcile.Result{}, nil
 }

@@ -14,8 +14,6 @@ const (
 	subnetExhaustionStateLabel = "subnet_exhaustion_state"
 	subnetIPExhausted          = 1
 	subnetIPNotExhausted       = 0
-	subnetIPRangeExhausted     = "subnetIPRangeExhausted"
-	subnetIPRangeNotExhausted  = "subnetIPRangeNotExhausted"
 )
 
 var (
