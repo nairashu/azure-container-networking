@@ -108,18 +108,26 @@ type NetworkContainer struct {
 	SubnetAddressSpace string         `json:"subnetAddressSpace,omitempty"`
 	// +kubebuilder:default=0
 	// +kubebuilder:validation:Optional
-	Version         int64  `json:"version"`
-	NodeIP          string `json:"nodeIP,omitempty"`
-	SubscriptionID  string `json:"subcriptionID,omitempty"`
-	ResourceGroupID string `json:"resourceGroupID,omitempty"`
-	VNETID          string `json:"vnetID,omitempty"`
-	SubnetID        string `json:"subnetID,omitempty"`
+	Version         int64         `json:"version"`
+	NodeIP          string        `json:"nodeIP,omitempty"`
+	SubscriptionID  string        `json:"subcriptionID,omitempty"`
+	ResourceGroupID string        `json:"resourceGroupID,omitempty"`
+	VNETID          string        `json:"vnetID,omitempty"`
+	SubnetID        string        `json:"subnetID,omitempty"`
+	PodSubnetStat   PodSubnetStat `json:"podSubnetStat,omitempty"`
 }
 
 // IPAssignment groups an IP address and Name. Name is a UUID set by the the IP address assigner.
 type IPAssignment struct {
 	Name string `json:"name,omitempty"`
 	IP   string `json:"ip,omitempty"`
+}
+
+// Datamodel to populate and update Pod Subnet Statistics in NC
+type PodSubnetStat struct {
+	SubnetCIDR            string  `json:"subnet_cidr,omitempty"`
+	Timestamp             string  `json:"timestamp,omitempty"`
+	UtilizationPercentage float64 `json:"utilization_percentage,omitempty"`
 }
 
 func init() {

@@ -123,6 +123,13 @@ spec:
                       type: string
                     subnetName:
                       type: string
+                    podsubnetstat:
+                      subnetcidr:
+                        type: string
+                      timestamp:
+                        type: string
+                      utilizationpercenetage:
+                          type: float64
                     type:
                       default: vnet
                       description: NCType is the specific type of network this NC
