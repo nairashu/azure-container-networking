@@ -62,17 +62,16 @@ const (
 type NodeNetworkConfigStatus struct {
 	// +kubebuilder:default=0
 	// +kubebuilder:validation:Optional
-	AssignedIPCount          int                      `json:"assignedIPCount"`
-	Scaler                   Scaler                   `json:"scaler,omitempty"`
-	Status                   Status                   `json:"status,omitempty"`
-	NetworkContainers        []NetworkContainer       `json:"networkContainers,omitempty"`
-	NetworkContainerStatuses []NetworkContainerStatus `json:"networkContainerStatuses,omitempty"`
+	AssignedIPCount   int                `json:"assignedIPCount"`
+	Scaler            Scaler             `json:"scaler,omitempty"`
+	Status            Status             `json:"status,omitempty"`
+	NetworkContainers []NetworkContainer `json:"networkContainers,omitempty"`
 }
 
 // NetworkContainerStatus defines the status of the Network Containers
 type NetworkContainerStatus struct {
-	NCID            string `json:"id,omitempty"`
-	LatestErrorCode string `json:"latestErrorCode,omitempty"`
+	Timestamp        metav1.Time `json:"timestamp,omitempty"`
+	LatestStatusCode string      `json:"latestStatusCode,omitempty"`
 }
 
 // Scaler groups IP request params together
@@ -115,12 +114,13 @@ type NetworkContainer struct {
 	SubnetAddressSpace string         `json:"subnetAddressSpace,omitempty"`
 	// +kubebuilder:default=0
 	// +kubebuilder:validation:Optional
-	Version         int64  `json:"version"`
-	NodeIP          string `json:"nodeIP,omitempty"`
-	SubscriptionID  string `json:"subcriptionID,omitempty"`
-	ResourceGroupID string `json:"resourceGroupID,omitempty"`
-	VNETID          string `json:"vnetID,omitempty"`
-	SubnetID        string `json:"subnetID,omitempty"`
+	Version         int64                  `json:"version"`
+	NodeIP          string                 `json:"nodeIP,omitempty"`
+	SubscriptionID  string                 `json:"subcriptionID,omitempty"`
+	ResourceGroupID string                 `json:"resourceGroupID,omitempty"`
+	VNETID          string                 `json:"vnetID,omitempty"`
+	SubnetID        string                 `json:"subnetID,omitempty"`
+	UpdateStatus    NetworkContainerStatus `json:"updateStatus,omitempty"`
 }
 
 // IPAssignment groups an IP address and Name. Name is a UUID set by the the IP address assigner.
