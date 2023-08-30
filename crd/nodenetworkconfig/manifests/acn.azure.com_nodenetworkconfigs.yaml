@@ -81,17 +81,6 @@ spec:
               assignedIPCount:
                 default: 0
                 type: integer
-              networkContainerStatuses:
-                items:
-                  description: NetworkContainerStatus defines the status of the Network
-                    Containers
-                  properties:
-                    id:
-                      type: string
-                    latestErrorCode:
-                      type: string
-                  type: object
-                type: array
               networkContainers:
                 items:
                   description: NetworkContainer defines the structure of a Network
@@ -144,6 +133,16 @@ spec:
                       description: NCType is the specific type of network this NC
                         represents.
                       type: string
+                    updateStatus:
+                      description: NetworkContainerStatus defines the status of the
+                        Network Containers
+                      properties:
+                        latestStatusCode:
+                          type: string
+                        timestamp:
+                          format: date-time
+                          type: string
+                      type: object
                     version:
                       default: 0
                       format: int64
