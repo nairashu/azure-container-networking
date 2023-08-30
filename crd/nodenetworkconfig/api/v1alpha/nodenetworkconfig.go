@@ -71,10 +71,17 @@ const (
 type NodeNetworkConfigStatus struct {
 	// +kubebuilder:default=0
 	// +kubebuilder:validation:Optional
-	AssignedIPCount   int                `json:"assignedIPCount"`
-	Scaler            Scaler             `json:"scaler,omitempty"`
-	Status            Status             `json:"status,omitempty"`
-	NetworkContainers []NetworkContainer `json:"networkContainers,omitempty"`
+	AssignedIPCount          int                      `json:"assignedIPCount"`
+	Scaler                   Scaler                   `json:"scaler,omitempty"`
+	Status                   Status                   `json:"status,omitempty"`
+	NetworkContainers        []NetworkContainer       `json:"networkContainers,omitempty"`
+	NetworkContainerStatuses []NetworkContainerStatus `json:"networkContainerStatuses,omitempty"`
+}
+
+// NetworkContainerStatus defines the status of the Network Containers
+type NetworkContainerStatus struct {
+	NCID            string `json:"id,omitempty"`
+	LatestErrorCode string `json:"latestErrorCode,omitempty"`
 }
 
 // Scaler groups IP request params together

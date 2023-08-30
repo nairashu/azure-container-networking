@@ -81,6 +81,17 @@ spec:
               assignedIPCount:
                 default: 0
                 type: integer
+              networkContainerStatuses:
+                items:
+                  description: NetworkContainerStatus defines the status of the Network
+                    Containers
+                  properties:
+                    id:
+                      type: string
+                    latestErrorCode:
+                      type: string
+                  type: object
+                type: array
               networkContainers:
                 items:
                   description: NetworkContainer defines the structure of a Network
