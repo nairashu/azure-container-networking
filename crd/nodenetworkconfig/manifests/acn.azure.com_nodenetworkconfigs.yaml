@@ -132,7 +132,7 @@ spec:
                       description: NetworkContainerStatus defines the status of the
                         Network Containers
                       properties:
-                        latestStatusCode:
+                        latestStatus:
                           type: string
                         timestamp:
                           format: date-time
