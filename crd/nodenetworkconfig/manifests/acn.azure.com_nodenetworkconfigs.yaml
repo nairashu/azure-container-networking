@@ -132,6 +132,8 @@ spec:
                       description: NetworkContainerStatus defines the status of the
                         Network Containers
                       properties:
+                        latestErrorText:
+                          type: string
                         latestStatus:
                           type: string
                         timestamp:
