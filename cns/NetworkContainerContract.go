@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/Azure/azure-container-networking/cns/types"
+	"github.com/Azure/azure-container-networking/crd/nodenetworkconfig/api/v1alpha"
 	"github.com/pkg/errors"
 	corev1 "k8s.io/api/core/v1"
 )
@@ -95,6 +96,7 @@ type CreateNetworkContainerRequest struct {
 	AllowHostToNCCommunication bool
 	AllowNCToHostCommunication bool
 	EndpointPolicies           []NetworkContainerRequestPolicies
+	NCStatus                   v1alpha.NetworkContainerStatus
 }
 
 // CreateNetworkContainerRequest implements fmt.Stringer for logging
