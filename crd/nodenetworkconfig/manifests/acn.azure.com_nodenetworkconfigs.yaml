@@ -130,11 +130,13 @@ spec:
                       type: string
                     updateStatus:
                       description: NetworkContainerStatus defines the status of the
-                        Network Containers
+                        Network Container
                       properties:
-                        latestErrorText:
+                        errorCode:
                           type: string
-                        latestStatus:
+                        errorText:
+                          type: string
+                        status:
                           type: string
                         timestamp:
                           format: date-time
