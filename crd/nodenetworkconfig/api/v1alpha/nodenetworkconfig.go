@@ -64,13 +64,12 @@ type NodeNetworkConfigStatus struct {
 	// +kubebuilder:validation:Optional
 	AssignedIPCount   int                `json:"assignedIPCount"`
 	Scaler            Scaler             `json:"scaler,omitempty"`
-	Status            Status             `json:"status,omitempty"`
 	NetworkContainers []NetworkContainer `json:"networkContainers,omitempty"`
 }
 
 // NetworkContainerStatus defines the status of the Network Container
 type NetworkContainerStatus struct {
-	Status    string `json:"status,omitempty"`
+	Status    Status `json:"status,omitempty"`
 	ErrorCode string `json:"errorCode,omitempty"`
 	ErrorText string `json:"errorText,omitempty"`
 }

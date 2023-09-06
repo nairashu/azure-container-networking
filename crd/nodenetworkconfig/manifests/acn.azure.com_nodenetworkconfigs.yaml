@@ -137,6 +137,11 @@ spec:
                         errorText:
                           type: string
                         status:
+                          description: Status indicates the NNC reconcile status
+                          enum:
+                          - Updating
+                          - Updated
+                          - Error
                           type: string
                       type: object
                     version:
@@ -163,13 +168,6 @@ spec:
                     format: int64
                     type: integer
                 type: object
-              status:
-                description: Status indicates the NNC reconcile status
-                enum:
-                - Updating
-                - Updated
-                - Error
-                type: string
             type: object
         type: object
     served: true
