@@ -58,20 +58,22 @@ const (
 	Error    Status = "Error"
 )
 
+// NCStatus indicates the latest NC request status
+// +kubebuilder:validation:Enum=SubnetFull
+type NCStatus string
+
+const (
+	NCStatusSubnetFull NCStatus = "SubnetFull"
+)
+
 // NodeNetworkConfigStatus defines the observed state of NetworkConfig
 type NodeNetworkConfigStatus struct {
 	// +kubebuilder:default=0
 	// +kubebuilder:validation:Optional
 	AssignedIPCount   int                `json:"assignedIPCount"`
 	Scaler            Scaler             `json:"scaler,omitempty"`
+	Status            Status             `json:"status,omitempty"`
 	NetworkContainers []NetworkContainer `json:"networkContainers,omitempty"`
-}
-
-// NetworkContainerStatus defines the status of the Network Container
-type NetworkContainerStatus struct {
-	Status    Status `json:"status,omitempty"`
-	ErrorCode string `json:"errorCode,omitempty"`
-	ErrorText string `json:"errorText,omitempty"`
 }
 
 // Scaler groups IP request params together
@@ -114,13 +116,13 @@ type NetworkContainer struct {
 	SubnetAddressSpace string         `json:"subnetAddressSpace,omitempty"`
 	// +kubebuilder:default=0
 	// +kubebuilder:validation:Optional
-	Version         int64                  `json:"version"`
-	NodeIP          string                 `json:"nodeIP,omitempty"`
-	SubscriptionID  string                 `json:"subcriptionID,omitempty"`
-	ResourceGroupID string                 `json:"resourceGroupID,omitempty"`
-	VNETID          string                 `json:"vnetID,omitempty"`
-	SubnetID        string                 `json:"subnetID,omitempty"`
-	UpdateStatus    NetworkContainerStatus `json:"updateStatus,omitempty"`
+	Version         int64    `json:"version"`
+	NodeIP          string   `json:"nodeIP,omitempty"`
+	SubscriptionID  string   `json:"subcriptionID,omitempty"`
+	ResourceGroupID string   `json:"resourceGroupID,omitempty"`
+	VNETID          string   `json:"vnetID,omitempty"`
+	SubnetID        string   `json:"subnetID,omitempty"`
+	Status          NCStatus `json:"status,omitempty"`
 }
 
 // IPAssignment groups an IP address and Name. Name is a UUID set by the the IP address assigner.

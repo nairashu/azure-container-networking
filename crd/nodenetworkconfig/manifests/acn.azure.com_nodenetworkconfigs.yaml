@@ -115,6 +115,11 @@ spec:
                       type: string
                     resourceGroupID:
                       type: string
+                    status:
+                      description: NCStatus indicates the latest NC request status
+                      enum:
+                      - SubnetFull
+                      type: string
                     subcriptionID:
                       type: string
                     subnetAddressSpace:
@@ -128,22 +133,6 @@ spec:
                       description: NCType is the specific type of network this NC
                         represents.
                       type: string
-                    updateStatus:
-                      description: NetworkContainerStatus defines the status of the
-                        Network Container
-                      properties:
-                        errorCode:
-                          type: string
-                        errorText:
-                          type: string
-                        status:
-                          description: Status indicates the NNC reconcile status
-                          enum:
-                          - Updating
-                          - Updated
-                          - Error
-                          type: string
-                      type: object
                     version:
                       default: 0
                       format: int64
@@ -168,6 +157,13 @@ spec:
                     format: int64
                     type: integer
                 type: object
+              status:
+                description: Status indicates the NNC reconcile status
+                enum:
+                - Updating
+                - Updated
+                - Error
+                type: string
             type: object
         type: object
     served: true
