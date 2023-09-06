@@ -70,10 +70,9 @@ type NodeNetworkConfigStatus struct {
 
 // NetworkContainerStatus defines the status of the Network Container
 type NetworkContainerStatus struct {
-	Timestamp metav1.Time `json:"timestamp,omitempty"`
-	Status    string      `json:"status,omitempty"`
-	ErrorCode string      `json:"errorCode,omitempty"`
-	ErrorText string      `json:"errorText,omitempty"`
+	Status    string `json:"status,omitempty"`
+	ErrorCode string `json:"errorCode,omitempty"`
+	ErrorText string `json:"errorText,omitempty"`
 }
 
 // Scaler groups IP request params together

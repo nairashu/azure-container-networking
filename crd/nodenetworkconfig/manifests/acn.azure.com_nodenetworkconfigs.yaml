@@ -138,9 +138,6 @@ spec:
                           type: string
                         status:
                           type: string
-                        timestamp:
-                          format: date-time
-                          type: string
                       type: object
                     version:
                       default: 0
