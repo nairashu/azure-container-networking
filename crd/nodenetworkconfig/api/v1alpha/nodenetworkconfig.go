@@ -60,6 +60,7 @@ const (
 
 // NCStatus indicates the latest NC request status
 // +kubebuilder:validation:Enum=SubnetFull
+// +kubebuilder:validation:Optional
 type NCStatus string
 
 const (
