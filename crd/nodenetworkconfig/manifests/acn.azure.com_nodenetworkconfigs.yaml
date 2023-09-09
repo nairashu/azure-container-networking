@@ -133,18 +133,6 @@ spec:
                       description: NCType is the specific type of network this NC
                         represents.
                       type: string
-                    updateStatus:
-                      description: NetworkContainerStatus defines the status of the
-                        Network Containers
-                      properties:
-                        latestErrorText:
-                          type: string
-                        latestStatus:
-                          type: string
-                        timestamp:
-                          format: date-time
-                          type: string
-                      type: object
                     version:
                       default: 0
                       format: int64

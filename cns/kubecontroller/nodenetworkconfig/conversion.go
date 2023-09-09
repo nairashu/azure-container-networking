@@ -66,7 +66,7 @@ func CreateNCRequestFromDynamicNC(nc v1alpha.NetworkContainer) (*cns.CreateNetwo
 			IPSubnet:         subnet,
 			GatewayIPAddress: nc.DefaultGateway,
 		},
-		NCStatus: nc.UpdateStatus,
+		NCStatus: nc.Status,
 	}, nil
 }
 

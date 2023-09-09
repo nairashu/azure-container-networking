@@ -96,7 +96,7 @@ type CreateNetworkContainerRequest struct {
 	AllowHostToNCCommunication bool
 	AllowNCToHostCommunication bool
 	EndpointPolicies           []NetworkContainerRequestPolicies
-	NCStatus                   v1alpha.NetworkContainerStatus
+	NCStatus                   v1alpha.NCStatus
 }
 
 // CreateNetworkContainerRequest implements fmt.Stringer for logging
@@ -104,9 +104,9 @@ func (req *CreateNetworkContainerRequest) String() string {
 	return fmt.Sprintf("CreateNetworkContainerRequest"+
 		"{Version: %s, NetworkContainerType: %s, NetworkContainerid: %s, PrimaryInterfaceIdentifier: %s, "+
 		"LocalIPConfiguration: %+v, IPConfiguration: %+v, SecondaryIPConfigs: %+v, MultitenancyInfo: %+v, "+
-		"AllowHostToNCCommunication: %t, AllowNCToHostCommunication: %t}",
+		"AllowHostToNCCommunication: %t, AllowNCToHostCommunication: %t, NCStatus: %s}",
 		req.Version, req.NetworkContainerType, req.NetworkContainerid, req.PrimaryInterfaceIdentifier, req.LocalIPConfiguration,
-		req.IPConfiguration, req.SecondaryIPConfigs, req.MultiTenancyInfo, req.AllowHostToNCCommunication, req.AllowNCToHostCommunication)
+		req.IPConfiguration, req.SecondaryIPConfigs, req.MultiTenancyInfo, req.AllowHostToNCCommunication, req.AllowNCToHostCommunication, string(req.NCStatus))
 }
 
 // NetworkContainerRequestPolicies - specifies policies associated with create network request

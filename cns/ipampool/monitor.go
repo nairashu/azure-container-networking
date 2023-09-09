@@ -123,7 +123,6 @@ func (pm *Monitor) Start(ctx context.Context) error {
 				pm.metastate.subnet = nnc.Status.NetworkContainers[0].SubnetName
 				pm.metastate.subnetCIDR = nnc.Status.NetworkContainers[0].SubnetAddressSpace
 				pm.metastate.subnetARMID = GenerateARMID(&nnc.Status.NetworkContainers[0])
-				pm.metastate.nncStatus = nnc.Status.NetworkContainers[0].UpdateStatus
 			}
 			pm.metastate.primaryIPAddresses = make(map[string]struct{})
 			// Add Primary IP to Map, if not present.
