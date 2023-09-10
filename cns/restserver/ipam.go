@@ -794,7 +794,7 @@ func (service *HTTPRestService) AssignAvailableIPConfigs(podInfo cns.PodInfo) ([
 	// slice to store NCIDs
 	ncIDs := make([]string, numOfNCs)
 	for key, _ := range service.state.ContainerStatus {
-		ncIDs := append(ncIDs, key)
+		ncIDs = append(ncIDs, key)
 	}
 
 	service.Lock()
