@@ -792,8 +792,8 @@ func (service *HTTPRestService) AssignAvailableIPConfigs(podInfo cns.PodInfo) ([
 		return nil, ErrNoNCs
 	}
 	// slice to store NCIDs
-	ncIDs := make([]string, numOfNCs)
-	for key, _ := range service.state.ContainerStatus {
+	ncIDs := make([]string, 0)
+	for key := range service.state.ContainerStatus {
 		ncIDs = append(ncIDs, key)
 	}
 
