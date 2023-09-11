@@ -65,6 +65,8 @@ type NCStatus string
 
 const (
 	NCStatusSubnetFull NCStatus = "SubnetFull"
+	NCUpdateSuccess    NCStatus = "UpdateSuccess"
+	NCUpdateFailed     NCStatus = "UpdateFailed"
 )
 
 // NodeNetworkConfigStatus defines the observed state of NetworkConfig
