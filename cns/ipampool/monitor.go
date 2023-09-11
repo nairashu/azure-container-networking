@@ -46,7 +46,6 @@ type metaState struct {
 	subnet             string
 	subnetARMID        string
 	subnetCIDR         string
-	nncStatus          v1alpha.NetworkContainerStatus
 }
 
 type Options struct {
