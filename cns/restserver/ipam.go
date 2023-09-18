@@ -828,11 +828,9 @@ func (service *HTTPRestService) AssignAvailableIPConfigs(podInfo cns.PodInfo) ([
 				continue
 			}
 			if service.state.ContainerStatus[ncID].CreateNetworkContainerRequest.NCStatus == v1alpha.NCStatusSubnetFull {
-				//nolint:goerr113 // return error
-				return podIPInfo, fmt.Errorf("not enough IPs available for %s, waiting on Azure CNS to allocate more but the Subnet is full", ncID)
+				return podIPInfo, errors.Errorf("not enough IPs available for %s, waiting on Azure CNS to allocate more but the Subnet is full", ncID)
 			}
-			//nolint:goerr113 // return error
-			return podIPInfo, fmt.Errorf("not enough IPs available for %s, waiting on Azure CNS to allocate more", ncID)
+			return podIPInfo, errors.Errorf("not enough IPs available for %s, waiting on Azure CNS to allocate more", ncID)
 		}
 	}
 
