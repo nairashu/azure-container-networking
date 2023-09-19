@@ -86,6 +86,14 @@ func (r *Reconciler) Reconcile(ctx context.Context, req reconcile.Request) (reco
 
 	// for each NC, parse it in to a CreateNCRequest and forward it to the appropriate Listener
 	for i := range nnc.Status.NetworkContainers {
+		// if the NC status has not been updated successfully skip the reconcilliation
+		noIPs := nnc.Status.NetworkContainers[i].IPAssignments == nil || len(nnc.Status.NetworkContainers[i].IPAssignments) == 0
+		if nnc.Status.NetworkContainers[i].Status != v1alpha.NCUpdateSuccess && noIPs {
+			logger.Printf("[cns-rc] skipping network container %s found in NNC because NC update status has the error %v",
+				nnc.Status.NetworkContainers[i].ID, nnc.Status.NetworkContainers[i].Status)
+			continue
+		}
+
 		// check if this NC matches the Node IP if we have one to check against
 		if r.nodeIP != "" {
 			if r.nodeIP != nnc.Status.NetworkContainers[i].NodeIP {
