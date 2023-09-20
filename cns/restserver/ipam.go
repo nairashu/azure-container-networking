@@ -790,14 +790,6 @@ func (service *HTTPRestService) AssignAvailableIPConfigs(podInfo cns.PodInfo) ([
 	if numOfNCs == 0 {
 		return nil, ErrNoNCs
 	}
-	// slice to store NCIDs
-	ncIDs := make([]string, numOfNCs)
-	i := 0
-	for ncID := range service.state.ContainerStatus {
-		ncIDs[i] = ncID
-		i++
-	}
-
 	service.Lock()
 	defer service.Unlock()
 	// Creates a slice of PodIpInfo with the size as number of NCs to hold the result for assigned IP configs
@@ -824,7 +816,7 @@ func (service *HTTPRestService) AssignAvailableIPConfigs(podInfo cns.PodInfo) ([
 
 	// Checks to make sure we found one IP for each NC
 	if len(ipsToAssign) != numOfNCs {
-		for _, ncID := range ncIDs {
+		for ncID := range service.state.ContainerStatus {
 			if _, found := ipsToAssign[ncID]; found {
 				continue
 			}
