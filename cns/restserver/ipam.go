@@ -14,7 +14,6 @@ import (
 	"github.com/Azure/azure-container-networking/cns/logger"
 	"github.com/Azure/azure-container-networking/cns/types"
 	"github.com/Azure/azure-container-networking/common"
-	"github.com/Azure/azure-container-networking/crd/nodenetworkconfig/api/v1alpha"
 	"github.com/pkg/errors"
 )
 
@@ -792,9 +791,11 @@ func (service *HTTPRestService) AssignAvailableIPConfigs(podInfo cns.PodInfo) ([
 		return nil, ErrNoNCs
 	}
 	// slice to store NCIDs
-	ncIDs := make([]string, 0)
-	for key := range service.state.ContainerStatus {
-		ncIDs = append(ncIDs, key)
+	ncIDs := make([]string, numOfNCs)
+	i := 0
+	for ncID := range service.state.ContainerStatus {
+		ncIDs[i] = ncID
+		i++
 	}
 
 	service.Lock()
@@ -827,10 +828,8 @@ func (service *HTTPRestService) AssignAvailableIPConfigs(podInfo cns.PodInfo) ([
 			if _, found := ipsToAssign[ncID]; found {
 				continue
 			}
-			if service.state.ContainerStatus[ncID].CreateNetworkContainerRequest.NCStatus == v1alpha.NCStatusSubnetFull {
-				return podIPInfo, errors.Errorf("not enough IPs available for %s, waiting on Azure CNS to allocate more but the Subnet is full", ncID)
-			}
-			return podIPInfo, errors.Errorf("not enough IPs available for %s, waiting on Azure CNS to allocate more", ncID)
+			return podIPInfo, errors.Errorf("not enough IPs available for %s, waiting on Azure CNS to allocate more with NC Status: %s",
+				ncID, string(service.state.ContainerStatus[ncID].CreateNetworkContainerRequest.NCStatus))
 		}
 	}
 
